@@ -1,0 +1,16 @@
+{
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": [
+          "source.ts",
+          "string.template"
+        ],
+        "settings": {
+          "foreground": "#3ab674",
+          "fontStyle": "bold"
+        }
+      }
+    ]
+  }
+}

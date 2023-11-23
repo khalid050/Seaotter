@@ -1,0 +1,9 @@
+{
+  "expectSnippet": {
+    "prefix": "expect",
+    "body": [
+      "expect`${${1:expression}} toEqual ${${2:expected}}`;"
+    ],
+    "description": "Expect Snippet"
+  }
+}

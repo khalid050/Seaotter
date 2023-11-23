@@ -1,0 +1,88 @@
+<h1>Sea Otter</h1>
+
+[![Project Status: Pre-Alpha](https://img.shields.io/badge/Project%20Status-Pre--Alpha-red.svg)](https://shields.io/#your-badge)
+
+
+<h2> Getting started</h2>
+🌊 Dive into testing with SeaOtter
+<p>
+
+<h2>Step 1: Create a configuration object with details about your test environment. Here's an example:
+</h2>
+
+1) Install the package
+2) Get the accompanying vscode extension for a superior experience
+
+  (Packages not yet published)
+```javascript
+const config = {
+  testDirectory: "/Absolute/Path/To/Test/Directory",
+  fastFail: true,
+  random: false,
+  tests: ["asyncTest.js"],
+};
+```
+
+Adjust the testDirectory to the absolute path of your test directory. Specify the tests you want to run in the tests array. Set fastFail to true for quicker test termination on the first failure, and toggle random to shuffle test execution order.
+
+<h2>Example test</h2>
+
+```javascript
+otter.explore`Create new User ${MyTag}`(() => {
+  otter.test`Login with valid credentials`(async () => {
+    await simulateLogin("validUsername", "validPassword");
+    await verifyOnHomePage();
+  });
+
+  test`Login with invalid credentials`(async () => {
+    await simulateLogin(
+      "invalidUsername",
+      "invalidPassword"
+    );
+
+  const a = 10;
+  const b = 20;
+  const c = 5;
+  
+  expect`${a} toEqual ${a}`;
+  expect`${a} toBeGreaterThan ${b}`;
+  expect`${c} toBeLessThan ${a}`;
+});
+```
+
+<h2>Step 3: Run your tests </h1>
+
+```javascript
+import { otter } from "./runner";
+import config from "./config";
+
+otter.wadeIn(config);
+
+(async function () {
+  await otter.dive();
+})();
+```
+
+This method offers a straightforward way to run your tests.
+
+<h3>Custom Test Execution using Generator (Alternative Approach)</h3>
+
+If you prefer more control over the test execution process, you can have the otter cruise through a generator.
+This approach allows you to perform additional processing after each test and before the next one begins.
+The generator provides valuable metadata about each test so that you can customize your workflow!
+
+```javascript
+(async function () {
+  for await (const test of otter.cruise()) {
+    console.log(test);
+  }
+})();
+
+```
+If running the former way, and running tests in quiet mode you can listen for the falure events
+
+```javascript
+   otter.on('testFailure', (error) => {
+     doSomething(error)
+   });
+```
