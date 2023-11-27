@@ -11,10 +11,9 @@
 <h2>Step 1: Create a configuration object with details about your test environment. Here's an example:
 </h2>
 
-1) Install the package
-2) Get the accompanying vscode extension for a superior experience
+1) `npm i -D seaotter`
+2) Get the accompanying vscode extension for a superior experience (not yet published)
 
-  (Packages not yet published)
 ```javascript
 const config = {
   testDirectory: "/Absolute/Path/To/Test/Directory",
