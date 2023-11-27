@@ -10,6 +10,7 @@
     "lint": "eslint ./",
     "prepublishOnly": "npm run build"
   },
+  "exclude": ["lsp"],
   "keywords": [],
   "author": "",
   "license": "ISC",
