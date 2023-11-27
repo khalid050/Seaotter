@@ -1,6 +1,7 @@
 <h1>Sea Otter</h1>
 
 [![Project Status: Pre-Alpha](https://img.shields.io/badge/Project%20Status-Pre--Alpha-red.svg)](https://shields.io/#your-badge)
+[![npm version](https://badge.fury.io/js/seaotter.svg)](https://badge.fury.io/js/seaotter)
 
 
 <h2> Getting started</h2>
