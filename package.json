@@ -1,6 +1,6 @@
 {
   "name": "seaotter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./build/src/index.js",
   "scripts": {
     "test": "nodemon ./build/src/example.js",
