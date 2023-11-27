@@ -1,6 +1,6 @@
 {
   "name": "seaotter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "./build/src/index.js",
   "scripts": {
     "test": "nodemon ./build/src/example.js",
@@ -10,7 +10,9 @@
     "lint": "eslint ./",
     "prepublishOnly": "npm run build"
   },
-  "exclude": ["lsp"],
+  "exclude": [
+    "lsp"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
