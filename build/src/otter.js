@@ -15,6 +15,14 @@ class Otter extends library_1.Library {
         this.testFiles = [];
         this.settings = {};
         this.logMode = 'verbose';
+        if ((process.env.TEST_OPTIONS)) {
+            const testOptions = JSON.parse(process.env.TEST_OPTIONS);
+            this.logMode = testOptions.verbose === 'true' ? 'verbose' : 'silent';
+        }
+        if (process.env.TEST_FILES) {
+            this.tests = process.env.TEST_FILES.split(',');
+        }
+        this.tests = [];
         this.testFiles = [];
         this.settings = {};
         this.currentTestFile = '';
@@ -22,7 +30,7 @@ class Otter extends library_1.Library {
         this[execQueue] = this[execQueue].bind(this);
         this.print = this.logMode === 'verbose' ? this.verboseLog : this.quietLog;
     }
-    wadeIn({ testDirectory, random = false, fastFail = true, tests = [] }) {
+    wadeIn({ testDirectory, random = false, fastFail = true, tests = this.tests }) {
         for (const testFile of tests) {
             this.info[testFile] = {
                 status: 'pending',

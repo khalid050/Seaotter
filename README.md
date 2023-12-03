@@ -25,7 +25,7 @@ const config = {
 
 Adjust the testDirectory to the absolute path of your test directory. Specify the tests you want to run in the tests array. Set fastFail to true for quicker test termination on the first failure, and toggle random to shuffle test execution order.
 
-<h2>Example test</h2>
+<h2>Step 2: Write a test</h2>
 
 ```javascript
 otter.explore`Create new User ${ MyTag }`(() => {
@@ -85,4 +85,17 @@ If running the former way, and running tests in quiet mode you can listen for th
    otter.on('testFailure', (error) => {
      doSomething(error)
    });
+```
+
+
+<h2>Using the CLI</h2>
+You'll need to setup some env variables
+
+```bash
+export TEST_DIR="/absolute/path/to/test/dir"
+
+# This is where your dive/cruise methods are used
+export TEST_ENTRY="/absolute/path/to/entry"
+
+otter <test(s)>
 ```

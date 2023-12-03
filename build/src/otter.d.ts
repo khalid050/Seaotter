@@ -24,6 +24,7 @@ declare class Otter extends Library {
     };
     private logMode;
     print: (node: Nodes, color: Color) => void;
+    tests: string[];
     constructor();
     wadeIn({ testDirectory, random, fastFail, tests }: Init): void;
     private [execQueue];
@@ -31,7 +32,7 @@ declare class Otter extends Library {
     private runTest;
     cruise(): AsyncGenerator<{
         info: {
-            status: "pending" | "success" | "failure";
+            status: "success" | "failure" | "pending";
             numTestsFailed: 0;
             numTestsPassed: number;
             failedTests: unknown[];

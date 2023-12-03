@@ -11,6 +11,7 @@ class Otter extends Library {
   private testFiles: string[] = [];
   private settings: Record<string, unknown> = {};
   private currentTestFile: string;
+
   info: {
     [file: string]: {
       status: 'pending' | 'success' | 'failure',
@@ -23,9 +24,19 @@ class Otter extends Library {
 
   private logMode: 'verbose' | 'silent' = 'verbose';
   print: (node: Nodes, color: Color) => void;
+  tests: string[];
 
   constructor() {
     super();
+    if ((process.env.TEST_OPTIONS) as string) {
+      const testOptions = JSON.parse(process.env.TEST_OPTIONS as string);
+      this.logMode = testOptions.verbose === 'true' ? 'verbose' : 'silent';
+    }
+    if (process.env.TEST_FILES) {
+      this.tests = process.env.TEST_FILES.split(',');
+    }
+
+    this.tests = [];
     this.testFiles = [];
     this.settings = {};
     this.currentTestFile = '';
@@ -34,7 +45,7 @@ class Otter extends Library {
     this.print = this.logMode === 'verbose' ? this.verboseLog : this.quietLog;
   }
 
-  wadeIn({ testDirectory, random = false, fastFail = true, tests = [] }: Init) {
+  wadeIn({ testDirectory, random = false, fastFail = true, tests = this.tests }: Init) {
     for (const testFile of tests) {
       this.info[testFile] = {
         status: 'pending',
@@ -51,7 +62,7 @@ class Otter extends Library {
     this.settings['fastFail'] = fastFail;
   }
 
-  private async [execQueue](queue: ExploreQueue) {
+  private async[execQueue](queue: ExploreQueue) {
     if (!queue || !queue.length) {
       return;
     }
@@ -104,7 +115,7 @@ class Otter extends Library {
     }
   }
 
-  async *cruise() {
+  async * cruise() {
     if (!this.testFiles.length) {
       console.log('No test files provided');
       return;

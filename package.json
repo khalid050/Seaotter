@@ -8,11 +8,15 @@
     "dev:build": "node_modules/typescript/bin/tsc -w",
     "dev:start": "nodemon ./build/src/example.js",
     "lint": "eslint ./",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "otter": "node ./build/bin/index.js"
   },
   "exclude": [
     "lsp"
   ],
+  "bin": {
+    "otter": "./build/bin/index.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -46,6 +50,7 @@
     "chokidar": "^3.5.3",
     "color-convert": "^2.0.1",
     "color-name": "^1.1.4",
+    "commander": "^11.1.0",
     "concat-map": "^0.0.1",
     "cross-spawn": "^7.0.3",
     "debug": "^3.2.7",
