@@ -2,7 +2,7 @@
 
 [![Project Status: Pre-Alpha](https://img.shields.io/badge/Project%20Status-Pre--Alpha-red.svg)](https://shields.io/#your-badge)
 [![npm version](https://badge.fury.io/js/seaotter.svg)](https://badge.fury.io/js/seaotter)
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <h2> Getting started</h2>
 🌊 Dive into testing with SeaOtter
@@ -90,6 +90,10 @@ If running the former way, and running tests in quiet mode you can listen for th
 
 <h2>Using the CLI</h2>
 You'll need to setup some env variables
+
+```bash
+npm i -g seaotter
+```
 
 ```bash
 export TEST_DIR="/absolute/path/to/test/dir"
