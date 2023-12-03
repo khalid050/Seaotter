@@ -1,27 +1,37 @@
-import { simulateDelay } from './utils';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { runThisTest, simulateDelay } from './utils';
 
-const Test_Types: TestTypes = {
-  DISABLE: '#disable',
-  REGRESSION: '#regression',
-};
+const tag = '#Regression';
 
-type TestTypes = Record<string, `#${string}`>
-const { REGRESSION } = Test_Types;
-
-otter.explore`This is my first Describe ${REGRESSION}`(() => {
+otter.explore`This is my first Describe ${tag}`(() => {
   otter.test`first test`(async () => {
-    await simulateDelay('A', 150);
-    await simulateDelay('B', 300);
+    // console.log('A');
+    await simulateDelay('B', 150);
+    await simulateDelay('C', 300);
   });
 
+
   otter.test`second test`(async () => {
-    await simulateDelay('C', 450);
-    await simulateDelay('D', 100);
+    // console.log('D');
+    await simulateDelay('E', 450);
+    await simulateDelay('F', 100);
+  });
+
+  otter.explore`nested describe`(() => {
+    test`nested test`(() => {
+      // console.log('logging nested test');
+    });
   });
 
   const a = 10;
   const b = 20;
+  expect`${a} toNotEqual ${b}`;
 
-  otter.expect`${a} toBeLessThan ${b}`;
-  otter.expect`${b} toBeLessThan ${b}`;
+  runThisTest({ a: 2, b: 3 });
+
+  // otter.when(a < b, () => {
+  //   test`Log the output diff`(() => {
+  //     // console.log({ a, b });
+  //   });
+  // });
 });

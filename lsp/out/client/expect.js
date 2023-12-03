@@ -30,20 +30,6 @@ class ExpectCompletionItemProvider {
     provideCompletionItems(document, position, token) {
         const linePrefix = document.lineAt(position).text.substr(0, position.character);
         const startPosition = new vscode.Position(position.line, position.character);
-        const lineText = document.lineAt(position.line).text;
-        const isInsideTemplate = lineText.includes('`') && lineText.indexOf('`') < position.character;
-        // if (isInsideTemplate) {
-        //   return [
-        //     new vscode.CompletionItem('toEqual', vscode.CompletionItemKind.Method),
-        //     new vscode.CompletionItem('toBeGreaterThan', vscode.CompletionItemKind.Method),
-        //     new vscode.CompletionItem('toBeLessThan', vscode.CompletionItemKind.Method),
-        //   ].map(item => {
-        //     const snippet = `\${\${1:expression}} ${item.label} \${\${2:expected}}\`;`;
-        //     item.insertText = new vscode.SnippetString(snippet);
-        //     item.range = new vscode.Range(position, position);
-        //     return item;
-        //   });
-        // }
         if (linePrefix.endsWith('expect')) {
             // to fix this 
             return [

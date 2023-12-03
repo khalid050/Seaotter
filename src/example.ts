@@ -3,12 +3,13 @@ import { Otter } from './otter';
 import config from './config';
 
 const otter = new Otter();
-const { explore, test, expect } = otter;
+const { explore, test, expect, when } = otter;
 
 (global as any).otter = otter;
 (global as any).explore = explore;
 (global as any).test = test;
 (global as any).expect = expect;
+(global as any).when = when;
 
 (async function () {
   otter.wadeIn(config);

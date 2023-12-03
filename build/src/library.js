@@ -10,9 +10,15 @@ class Library extends stream_1.EventEmitter {
         this.exploreQueue = []; // todo: change to linked list?
         this.exploreStack = [];
         this.currentExplore = null;
+        this.beforeAllCallbacks = [];
+        this.beforeEachCallbacks = [];
+        this.afterEachCallbacks = [];
+        this.afterAllCallbacks = [];
         this.explore = this.explore.bind(this);
         this.test = this.test.bind(this);
         this.expect = this.expect.bind(this);
+        this.when = this.when.bind(this);
+        this.skip = this.skip.bind(this);
     }
     explore(description, ...values) {
         values = values.map((tag) => (0, tools_1.highlight)(tag, 'yellow'));
@@ -23,7 +29,7 @@ class Library extends stream_1.EventEmitter {
             children: [],
             tags: [],
             nestingLevel: this.exploreStack.length,
-            status: 'success'
+            metadata: null
         };
         if (this.currentExplore) {
             this.currentExplore.children.push(exploreNode);
@@ -37,27 +43,67 @@ class Library extends stream_1.EventEmitter {
             exploreBody();
             this.exploreStack.pop();
             this.currentExplore = this.peek() || null;
+            return {
+                setMetadata: this.setMetadata.bind(this, exploreNode)
+            };
         };
     }
+    setMetadata(exploreNode, metadata) {
+        exploreNode.metadata = metadata;
+    }
+    /**
+     *
+     * @param description Description of your test
+     * @param values
+     * @returns test body as a callback function. You may optionally paramaterize the callback by providing an argument after the callback
+     */
     test(description, ...values) {
-        if (!this.currentExplore) {
-            console.log('error');
-            throw new Error('Test must be inside a Explore statement');
-        }
-        return (testBody) => {
+        return (testBody, ...args) => {
             const concatenatedDescription = description.reduce((acc, str, i) => acc + str + (values[i] || ''), '');
             const testNode = {
                 type: 'test',
                 description: concatenatedDescription,
-                testBody: testBody,
+                testBody: testBody.bind(this, ...args),
                 nestingLevel: this.exploreStack.length,
-                status: 'pending'
+                status: 'success',
+                metadata: null
             };
             if (this.currentExplore) {
                 this.currentExplore.children.push(testNode);
             }
+            else {
+                throw new Error('Nested test statements are not allowed');
+            }
+            return {
+                setMetadata: this.setMetadata.bind(this, testNode)
+            };
         };
     }
+    skip(description, ...values) {
+        if (!this.currentExplore) {
+            console.log('error');
+            throw new Error('Test must be inside a Explore statement');
+        }
+        return () => {
+            const concatenatedDescription = description.reduce((acc, str, i) => acc + str + (values[i] || ''), '');
+            const skippedTestNode = {
+                type: 'skippedTest',
+                description: concatenatedDescription,
+                nestingLevel: this.exploreStack.length,
+                status: 'skipped'
+            };
+            if (this.currentExplore) {
+                this.currentExplore.children.push(skippedTestNode);
+            }
+        };
+    }
+    // forEach(description: TemplateStringsArray, ...values: string[]) {
+    //   const concatenatedDescription = description.reduce((acc, str, i) => acc + str + (values[i] || ''), '');
+    //   return (arr: unknown[]) => {
+    //     arr.forEach((element, index) => {
+    //     });
+    //   };
+    // }
     expect(assertion, ...values) {
         const concatenatedAssertion = `expect ${values[0]}${assertion[1]}${values[1]}`;
         const trimmedAssertion = assertion[1].trim();
@@ -66,14 +112,13 @@ class Library extends stream_1.EventEmitter {
             type: 'assertion',
             description: concatenatedAssertion,
             nestingLevel: this.exploreStack.length,
-            status: 'pending',
+            status: 'success',
             testBody: testBody
         };
         if (this.currentExplore) {
             this.currentExplore.children.push(assertionNode);
         }
         else {
-            // not tested yet
             if (!this.currentExplore) {
                 throw new Error('Expect must be inside an Explore or Test statement');
             }
@@ -92,7 +137,7 @@ class Library extends stream_1.EventEmitter {
         return a < b;
     }
     toNotEqual(a, b) {
-        return a < b;
+        return a !== b;
     }
     logWithIndent(message, nestingLevel) {
         const indentation = '  '.repeat(nestingLevel);
@@ -103,6 +148,44 @@ class Library extends stream_1.EventEmitter {
     }
     flush() {
         this.exploreQueue = [];
+        this.exploreStack = [];
+    }
+    /**
+     * @param expression Anything that evaluates to a boolean
+     * @param cb Callback to run when if the expression evaluates to true
+     * @returns undefined
+     */
+    when(expression, cb) {
+        if (typeof expression !== 'boolean') {
+            throw new Error('Argument result must be of type boolean');
+        }
+        if (expression) {
+            return cb();
+        }
+    }
+    beforeEach(callback) {
+        this.beforeEachCallbacks.push(callback);
+    }
+    afterEach(callback) {
+        this.afterEachCallbacks.push(callback);
+    }
+    beforeAll(callback) {
+        this.beforeAllCallbacks.push(callback);
+    }
+    afterAll(callback) {
+        this.afterAllCallbacks.push(callback);
+    }
+    runBeforeEach() {
+        this.beforeEachCallbacks.forEach((callback) => callback());
+    }
+    runAfterEach() {
+        this.afterEachCallbacks.forEach((callback) => callback());
+    }
+    runBeforeAll() {
+        this.beforeAllCallbacks.forEach((callback) => callback());
+    }
+    runAfterAll() {
+        this.afterAllCallbacks.forEach((callback) => callback());
     }
 }
 exports.Library = Library;

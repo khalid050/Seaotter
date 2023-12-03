@@ -7,11 +7,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const otter_1 = require("./otter");
 const config_1 = __importDefault(require("./config"));
 const otter = new otter_1.Otter();
-const { explore, test, expect } = otter;
+const { explore, test, expect, when } = otter;
 global.otter = otter;
 global.explore = explore;
 global.test = test;
 global.expect = expect;
+global.when = when;
 (async function () {
     otter.wadeIn(config_1.default);
     otter.on('testFailure', (error) => {

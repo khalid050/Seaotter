@@ -28,7 +28,7 @@ Adjust the testDirectory to the absolute path of your test directory. Specify th
 <h2>Example test</h2>
 
 ```javascript
-otter.explore`Create new User ${MyTag}`(() => {
+otter.explore`Create new User ${ MyTag }`(() => {
   otter.test`Login with valid credentials`(async () => {
     await simulateLogin("validUsername", "validPassword");
     await verifyOnHomePage();
@@ -53,7 +53,7 @@ otter.explore`Create new User ${MyTag}`(() => {
 <h2>Step 3: Run your tests </h1>
 
 ```javascript
-import { otter } from "./runner";
+import { otter } from "seaotter";
 import config from "./config";
 
 otter.wadeIn(config);
@@ -74,12 +74,12 @@ The generator provides valuable metadata about each test so that you can customi
 ```javascript
 (async function () {
   for await (const test of otter.cruise()) {
-    console.log(test);
+    // do something with metadata
   }
 })();
 
 ```
-If running the former way, and running tests in quiet mode you can listen for the falure events
+If running the former way, and running tests in quiet mode you can listen for the failure events
 
 ```javascript
    otter.on('testFailure', (error) => {

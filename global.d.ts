@@ -5,7 +5,5 @@ declare global {
   const explore: typeof Otter.prototype.explore;
   const test: typeof Otter.prototype.test;
   const expect: typeof Otter.prototype.expect;
+  const when: typeof Otter.prototype.when;
 }
-
-// declare type explore = typeof Otter.prototype.explore
-// declare type expect = typeof Otter.prototype.expect

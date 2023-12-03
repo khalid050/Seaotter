@@ -7,7 +7,7 @@ export type ExploreNode = {
   tags: `#${string}`[];
   nestingLevel: number;
   children: Children;
-  status: Status
+  metadata: Metadata
 };
 export type TestNode = {
   type: 'test'
@@ -15,6 +15,13 @@ export type TestNode = {
   testBody: TestBody
   nestingLevel: number;
   status: Status
+  metadata: Metadata
+}
+export type SkippedTestNode = {
+  type: 'skippedTest'
+  description: string;
+  nestingLevel: number;
+  status: 'skipped'
 }
 
 export type AssertionNode = {
@@ -25,10 +32,10 @@ export type AssertionNode = {
   testBody: () => boolean;
 };
 
-export type TestBody = () => Promise<void> | void;
+export type TestBody = (...args: unknown[]) => Promise<void> | void;
 export type ExploreBody = () => void;
 
-export type Nodes = ExploreNode | TestNode | AssertionNode
+export type Nodes = ExploreNode | TestNode | AssertionNode | SkippedTestNode
 export type Children = Nodes[]
 
 export type Assertions = {
@@ -39,3 +46,5 @@ export type Assertions = {
 }
 
 export type AssertionFunc = <T>(a: T, b: T) => boolean
+
+type Metadata = Record<string, unknown> | null;

@@ -9,7 +9,7 @@ const COLORS = {
     cyan: '\x1b[36m%s\x1b[0m',
     green: '\x1b[32m',
     gray: '\x1b[90m',
-    white: '\u001b[37;1m',
+    white: '\u001b[371m',
 };
 exports.COLORS = COLORS;
 const highlight = (text, color) => {

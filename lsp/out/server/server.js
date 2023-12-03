@@ -14,7 +14,6 @@ const node_1 = require("vscode-languageserver/node");
 const validateExpect_1 = require("./validateExpect");
 const diagnosticsManager_1 = require("./diagnosticsManager");
 const connection = (0, node_1.createConnection)();
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 function initializeServer(params) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

@@ -1,7 +1,7 @@
 import { Library } from './library';
 import { Color } from './tools';
 import { ExploreQueue, Nodes } from './types';
-declare const executeQueueSymbol: unique symbol;
+declare const execQueue: unique symbol;
 type Init = {
     testDirectory: string;
     random?: boolean;
@@ -12,17 +12,30 @@ type Init = {
 declare class Otter extends Library {
     private testFiles;
     private settings;
-    info: Record<string, {
-        status: string;
-    }>;
+    private currentTestFile;
+    info: {
+        [file: string]: {
+            status: 'pending' | 'success' | 'failure';
+            numTestsFailed: 0;
+            numTestsPassed: number;
+            failedTests: Array<unknown>;
+            testTime: number;
+        };
+    };
     private logMode;
     print: (node: Nodes, color: Color) => void;
     constructor();
     wadeIn({ testDirectory, random, fastFail, tests }: Init): void;
-    private [executeQueueSymbol];
+    private [execQueue];
+    private runAssertion;
+    private runTest;
     cruise(): AsyncGenerator<{
         info: {
-            status: string;
+            status: "pending" | "success" | "failure";
+            numTestsFailed: 0;
+            numTestsPassed: number;
+            failedTests: unknown[];
+            testTime: number;
         };
         testHierarchy: ExploreQueue;
     }, void, unknown>;
